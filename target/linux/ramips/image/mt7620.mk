@@ -854,6 +854,17 @@ define Device/ohyeah_oy-0001
 endef
 TARGET_DEVICES += ohyeah_oy-0001
 
+define Device/oray_r300a
+  SOC := mt7620a
+  IMAGE_SIZE := 16064k
+  DEVICE_VENDOR := Oray
+  DEVICE_MODEL := R300A
+  DEVICE_PACKAGES := kmod-mt76x0e \
+    kmod-usb2 kmod-usb-ohci kmod-usb-uhci kmod-usb-serial-option \
+    kmod-usb-net-qmi-wwan
+endef
+TARGET_DEVICES += oray_r300a
+
 define Device/phicomm_k2-v22.4
   SOC := mt7620a
   IMAGE_SIZE := 7872k
