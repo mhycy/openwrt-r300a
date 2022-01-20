@@ -86,36 +86,18 @@
 		#size-cells = <0>;
 		
 		cpe_pwr {
-			gpio-export,name = "cpe-pwr";
-			gpio-export,output = <1>;
-			gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;
-		};
-
-		usb_pwr {
-			gpio-export,name = "usb-pwr";
-			gpio-export,output = <1>;
-			gpios = <&gpio0 14 GPIO_ACTIVE_LOW>;
-		};
-
-		sim_sel {
-			gpio-export,name = "sim-sel";
-			gpio-export,output = <1>;
-			gpios = <&gpio1 15 GPIO_ACTIVE_HIGH>;
-		};
-
-		gpio13 {
 			gpio-export,name = "gpio13";
 			gpio-export,output = <1>;
 			gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;
 		};
 
-		gpio14 {
+		usb_pwr {
 			gpio-export,name = "gpio14";
 			gpio-export,output = <1>;
 			gpios = <&gpio0 14 GPIO_ACTIVE_LOW>;
 		};
 
-		gpio39 {
+		sim_sel {
 			gpio-export,name = "gpio39";
 			gpio-export,output = <1>;
 			gpios = <&gpio1 15 GPIO_ACTIVE_HIGH>;

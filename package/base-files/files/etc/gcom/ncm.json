@@ -83,12 +83,9 @@
                 "ATV1",
                 "ATE1",
                 "ATS0=0",
-                
-                "AT+QCFG=\\\"nat\\\",1",
-                "AT+QCFG=\\\"usbnet\\\",3"
-            ],
-            "configure": [
                 "AT+CGDCONT=${profile},\\\"${pdptype}\\\"${apn:+,\\\"$apn\\\"}",
+                "AT+QCFG=\\\"nat\\\",1",
+                "AT+QCFG=\\\"usbnet\\\",3",
                 "AT+QICSGP=${profile},1${apn:+,\\\"$apn\\\"}${username:+,\\\"$username\\\"}${password:+,\\\"$password\\\"}${auth:+,$auth}"
             ],
             "connect": "AT+QNETDEVCTL=1,1",
