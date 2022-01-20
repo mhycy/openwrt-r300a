@@ -1,0 +1,18 @@
+config interface 'loopback'
+        option device 'lo'
+        option proto 'static'
+        option ipaddr '127.0.0.1'
+        option netmask '255.0.0.0'
+
+config globals 'globals'
+        option ula_prefix 'fd05:d8de:a4ca::/48'
+
+config interface 'lan'
+        option proto 'static'
+        option ipaddr '192.168.228.1'
+        option netmask '255.255.255.0'
+        option device 'eth0.1'
+
+config interface 'wwan'
+        option proto 'dhcp'
+        option device 'usb0'
