@@ -1,0 +1,5 @@
+{
+	"desc":"Quectel EP06-E",
+	"control":2,
+	"type":"qmi_wwan"
+}

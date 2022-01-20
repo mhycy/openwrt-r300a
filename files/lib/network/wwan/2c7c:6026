@@ -1,0 +1,48 @@
+{
+	"desc":"Quectel EC200T-CN",
+	"control":1,
+	"data": 0,
+	"type":"cdc_ether",
+	"lock_freq":[
+		{
+			"command":"AT+QCFG=\"nwscanmode\"",
+			"freqlist":{
+				"AUTO":",0,1",
+				"GSM900":",1,1",
+				"GSM1800":",1,1",
+				"WCDMA850":",2,1",
+				"WCDMA900":",2,1",
+				"WCDMA2100":",2,1",
+				"LTEB1":",3,1",
+				"LTEB3":",3,1",
+				"LTEB5":",3,1",
+				"LTEB8":",3,1",
+				"LTEB34":",3,1",
+				"LTEB38":",3,1",
+				"LTEB39":",3,1",
+				"LTEB40":",3,1",
+				"LTEB41":",3,1"
+			}
+		},
+		{
+			"command":"AT+QCFG=\"band\"",
+			"freqlist":{
+				"AUTO":",FFFF,7FFFFFFFFFFFFFFF",
+				"GSM900":",1,0",
+				"GSM1800":",2,0",
+				"WCDMA850":",40,0",
+				"WCDMA900":",80,0",
+				"WCDMA2100":",10,0",
+				"LTEB1":",0,1",
+				"LTEB3":",0,4",
+				"LTEB5":",0,10",
+				"LTEB8":",0,80",
+				"LTEB34":",0,200000000",
+				"LTEB38":",0,2000000000",
+				"LTEB39":",0,4000000000",
+				"LTEB40":",0,8000000000",
+				"LTEB41":",0,10000000000"
+			}
+		}
+	]
+}
