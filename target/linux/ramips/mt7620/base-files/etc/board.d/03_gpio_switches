@@ -25,8 +25,8 @@ lb-link,bl-w1200)
 	ucidef_add_gpio_switch "eth_leds_enable" "ETH LEDs enable" "10" "1"
 	;;
 oray,r300a)
-	ucidef_add_gpio_switch "cpe-pwr" "CPE Power" "13" "1"
-	ucidef_add_gpio_switch "usb-pwr" "CPE Power" "14" "1"
+	ucidef_add_gpio_switch "cpe-pwr" "CPE Power" "13" "0"
+	ucidef_add_gpio_switch "usb-pwr" "CPE Power" "14" "0"
 	;;
 zbtlink,zbt-we826-e)
 	ucidef_add_gpio_switch "sim_switch" "SIM slot switch" "13"
