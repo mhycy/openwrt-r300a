@@ -24,6 +24,10 @@ head-weblink,hdrm200)
 lb-link,bl-w1200)
 	ucidef_add_gpio_switch "eth_leds_enable" "ETH LEDs enable" "10" "1"
 	;;
+oray,r300a)
+	ucidef_add_gpio_switch "cpe-pwr" "CPE Power" "13" "1"
+	ucidef_add_gpio_switch "usb-pwr" "CPE Power" "14" "1"
+	;;
 zbtlink,zbt-we826-e)
 	ucidef_add_gpio_switch "sim_switch" "SIM slot switch" "13"
 	ucidef_add_gpio_switch "power_mpcie" "mPCIe power" "14" "1"
