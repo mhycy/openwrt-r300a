@@ -102,6 +102,24 @@
 			gpio-export,output = <1>;
 			gpios = <&gpio1 15 GPIO_ACTIVE_HIGH>;
 		};
+
+		gpio13 {
+			gpio-export,name = "gpio13";
+			gpio-export,output = <1>;
+			gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;
+		};
+
+		gpio14 {
+			gpio-export,name = "gpio14";
+			gpio-export,output = <1>;
+			gpios = <&gpio0 14 GPIO_ACTIVE_LOW>;
+		};
+
+		gpio39 {
+			gpio-export,name = "gpio39";
+			gpio-export,output = <1>;
+			gpios = <&gpio1 15 GPIO_ACTIVE_HIGH>;
+		};
 	};
 };
 
