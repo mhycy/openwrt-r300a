@@ -74,6 +74,7 @@ proto_ncm_setup() {
 	[ -n "$delay" ] && sleep "$delay"
 
 	manufacturer=$(gcom -d "$device" -s /etc/gcom/getcardinfo.gcom | awk 'NF && $0 !~ /AT\+CGMI/ { sub(/\+CGMI: /,""); print tolower($1); exit; }')
+	[ -f "$devpath/../../manufacturer" ] && manufacturer=$(awk '{print tolower($1)}' "$devpath/../../manufacturer")
 	[ $? -ne 0 -o -z "$manufacturer" ] && {
 		echo "Failed to get modem information"
 		proto_notify_error "$interface" GETINFO_FAILED
