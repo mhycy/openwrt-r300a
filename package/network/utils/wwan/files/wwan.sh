@@ -9,11 +9,11 @@ INCLUDE_ONLY=1
 ctl_device=""
 dat_device=""
 
-proto_mbim_setup() { echo "wwan[$$] mbim proto is missing"; }
-proto_qmi_setup() { echo "wwan[$$] qmi proto is missing"; }
-proto_ncm_setup() { echo "wwan[$$] ncm proto is missing"; }
-proto_3g_setup() { echo "wwan[$$] 3g proto is missing"; }
-proto_directip_setup() { echo "wwan[$$] directip proto is missing"; }
+proto_mbim_setup() { logger -t netifd-wwan "wwan[$$] mbim proto is missing"; }
+proto_qmi_setup() { logger -t netifd-wwan "wwan[$$] qmi proto is missing"; }
+proto_ncm_setup() { logger -t netifd-wwan "wwan[$$] ncm proto is missing"; }
+proto_3g_setup() { logger -t netifd-wwan "wwan[$$] 3g proto is missing"; }
+proto_directip_setup() { logger -t netifd-wwan "wwan[$$] directip proto is missing"; }
 
 [ -f ./mbim.sh ] && . ./mbim.sh
 [ -f ./ncm.sh ] && . ./ncm.sh
@@ -51,13 +51,13 @@ proto_wwan_setup() {
 				devicename=$bus
 			}
 		else
-			echo "wwan[$$]" "Specified usb bus ${bus} was not found"
+			logger -t netifd-wwan "wwan[$$]" "Specified usb bus ${bus} was not found"
 			proto_notify_error "$interface" NO_USB
 			proto_block_restart "$interface"
 			return 1
 		fi
 	else
-		echo "wwan[$$]" "Searching for a valid wwan usb device..."
+		logger -t netifd-wwan "wwan[$$]" "Searching for a valid wwan usb device..."
 		for a in $(ls /sys/bus/usb/devices); do
 			local vendor product
 			[ -z "$usb" -a -f /sys/bus/usb/devices/$a/idVendor -a  -f /sys/bus/usb/devices/$a/idProduct ] || continue
@@ -70,7 +70,7 @@ proto_wwan_setup() {
 		done
 	fi
 
-	echo "wwan[$$]" "Using wwan usb device on bus $devicename"
+	logger -t netifd-wwan "wwan[$$]" "Using wwan usb device on bus $devicename"
 
 	[ -n "$usb" ] && {
 		local old_cb control data
@@ -84,8 +84,8 @@ proto_wwan_setup() {
 
 		[ -n "$control" -a -n "$data" ] && {
 			ttys=$(ls -d /sys/bus/usb/devices/$devicename/${devicename}*/tty?* /sys/bus/usb/devices/$devicename/${devicename}*/tty/tty?* | sed "s/.*\///g" | tr "\n" " ")
-			ctl_device=/dev/$(echo $ttys | cut -d" " -f $((control + 1)))
-			dat_device=/dev/$(echo $ttys | cut -d" " -f $((data + 1)))
+			ctl_device=/dev/$(logger -t netifd-wwan $ttys | cut -d" " -f $((control + 1)))
+			dat_device=/dev/$(logger -t netifd-wwan $ttys | cut -d" " -f $((data + 1)))
 			driver=comgt
 		}
 	}
@@ -105,11 +105,11 @@ proto_wwan_setup() {
 			;;
 		*) continue;;
 		esac
-		echo "wwan[$$]" "Using proto:$proto device:$ctl_device iface:$net desc:$desc"
+		logger -t netifd-wwan "wwan[$$]" "Using proto:$proto device:$ctl_device iface:$net desc:$desc"
 	done
 
 	[ -n "$ctl_device" ] || {
-		echo "wwan[$$]" "No valid device was found"
+		logger -t netifd-wwan "wwan[$$]" "No valid device was found"
 		proto_notify_error "$interface" NO_DEVICE
 		proto_block_restart "$interface"
 		return 1
