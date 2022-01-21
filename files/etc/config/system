@@ -1,9 +1,17 @@
 config system
-        option hostname 'EH-LTE-BOX'
+        option hostname 'LTEBOX'
         option conloglevel '8'
-        option cronloglevel '8'
         option zonename 'Asia/Shanghai'
         option timezone 'CST-8'
+        option log_proto 'udp'
+        option cronloglevel '5'
+        option zram_comp_algo 'lzo'
+
+config timeserver 'ntp'
+        list server 'ntp1.aliyun.com'
+        list server 'ntp2.aliyun.com'
+        list server 'ntp3.aliyun.comg'
+        list server 'ntp4.aliyun.comg'
 
 config timeserver 'ntp'
         option enabled '1'

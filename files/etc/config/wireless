@@ -8,7 +8,7 @@ config wifi-device 'radio1'
         option txpower '20'
         option country 'CN'
 
-config wifi-iface 'default_radio1'
+config wifi-iface 'wlan0'
         option device 'radio1'
         option network 'lan'
         option mode 'ap'

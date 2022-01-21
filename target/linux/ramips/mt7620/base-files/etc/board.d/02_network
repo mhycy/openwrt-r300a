@@ -352,7 +352,9 @@ ramips_setup_macs()
 		label_mac=$wan_mac
 		;;
 	oray,r300a)
-		wan_mac=$(mtd_get_mac_binary bdinfo 0x9)
+		lan_mac=$(mtd_get_mac_binary bdinfo 0x9)
+		wan_mac=$(macaddr_add "$(mtd_get_mac_binary bdinfo 0x9)" 1)
+		label_mac=$lan_mac
 		;;
 	lenovo,newifi-y1|\
 	lenovo,newifi-y1s|\
