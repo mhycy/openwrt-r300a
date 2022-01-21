@@ -53,8 +53,6 @@ ramips_setup_interfaces()
 	netgear,ex3700|\
 	netgear,ex6120|\
 	netgear,ex6130|\
-	netgear,wn3000rp-v3|\
-	oray,r300a|\
 	planex,cs-qr10|\
 	planex,mzk-ex300np|\
 	planex,mzk-ex750np|\

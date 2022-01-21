@@ -7,6 +7,10 @@ config interface 'loopback'
 config globals 'globals'
         option ula_prefix 'fd05:d8de:a4ca::/48'
 
+config interface 'wan'
+        option device 'eth0.2'
+        option proto 'dhcp'
+
 config device
         option name 'br-lan'
         option type 'bridge'
@@ -17,7 +21,6 @@ config interface 'lan'
         option proto 'static'
         option ipaddr '192.168.1.1'
         option netmask '255.255.255.0'
-        option ip6assign '60'
 
 config switch
         option name 'switch0'
@@ -26,5 +29,11 @@ config switch
 
 config interface 'wwan'
         option device 'usb0'
-        option hostname '*'
         option proto 'wwan'
+        # option apn
+	# option auth
+	# option username
+	# option password
+	# option pincode
+	# option delay
+	
