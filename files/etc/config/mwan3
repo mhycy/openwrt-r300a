@@ -37,38 +37,37 @@ config interface 'wwan'
     option failure_interval '3'
     option recovery_interval '1'
 
-config member 'wan_m10'
+config member 'wan_w10'
+    option interface 'wan'
+    option metric '10'
+    option weight '10'
+
+config member 'wan_w20'
     option interface 'wan'
     option metric '10'
     option weight '20'
 
-config member 'wan_m20'
-    option interface 'wan'
-    option metric '20'
-    option weight '20'
-
-config member 'wwan_m10'
+config member 'wwan_w10'
     option interface 'wwan'
     option metric '10'
-    option weight '20'
+    option weight '10'
 
-config member 'wwan_m20'
+config member 'wwan_w20'
     option interface 'wwan'
-    option metric '20'
+    option metric '10'
     option weight '20'
 
 config policy 'balanced'
-    list use_member 'wwan_m10'
-    list use_member 'wan_m20'
+    list use_member 'wwan_w10'
+    list use_member 'wan_w10'
 
 config policy 'wan_pri'
-    list use_member 'wan_m10'
-    list use_member 'wwan_m20'
-        
+    list use_member 'wan_w20'
+    list use_member 'wwan_w10'
 
 config policy 'wwan_pri'
-    list use_member 'wan_m20'
-    list use_member 'wwan_m10'
+    list use_member 'wan_w10'
+    list use_member 'wwan_w20'
 
 config rule
     option dest_ip '0.0.0.0/0'
