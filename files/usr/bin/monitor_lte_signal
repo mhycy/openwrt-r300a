@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. /etc/ltebox/util.sh
+. /lib/ltebox/util.sh
 . /lib/functions.sh
 
 machine_name=$(get_machine_name)

@@ -158,7 +158,7 @@ MACHINE_E3_1141
 #获取当前机型
 get_machine_name()
 {
-    . /etc/ltebox/machine.conf
+    . /lib/ltebox/machine.conf
 	echo $oraybox_machine_name
 }
 
