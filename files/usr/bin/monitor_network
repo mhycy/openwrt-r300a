@@ -4,8 +4,9 @@
 . /lib/functions.sh
 
 machine_name=$(get_machine_name)
-echo $machine_name
 device="/dev/ttyUSB1"
+# R300-2121G 4g modem控制口变为/dev/ttyUSB3
+[ "$machine_name" = "$MACHINE_R300_2121G" ] && device="/dev/ttyUSB3"
 
 set_signal_led() {
     local LEVEL=$1;
@@ -49,26 +50,31 @@ get_rssi_sig_level() {
     return 0
 }
 
+check_wwan_signal() {
+    get_rssi_sig_level
+    sig_level=$?
+    
+    set_signal_led "$sig_level"
+}
+
+check_vpn_connected() {
+    PING_TARGET="10.238.5.1"
+    PING_WAIT="1"
+
+    PINT_TEST=`ping -c 1 -W $PING_WAIT $PING_TARGET | grep loss | awk -F "," '{print $2}' | awk -F " " '{print $1}'`
+    if [[ PING_TEST -ne 0 ]]; then
+        echo 0 > /sys/class/leds/red:sys/brightness
+        echo 255 > /sys/class/leds/blue:sys/brightness
+    else
+        echo 255 > /sys/class/leds/red:sys/brightness
+        echo 0 > /sys/class/leds/blue:sys/brightness
+    fi
+}
+
 # 重置为无信号
 set_signal_led "0"
-
-# R300-2121G 4g modem控制口变为/dev/ttyUSB3
-[ "$machine_name" = "$MACHINE_R300_2121G" ] && device="/dev/ttyUSB3"
-
 while true;do
-    [ "$machine_name" == "$MACHINE_R300_1121G" -o "$machine_name" == "$MACHINE_R300_2121G" -o "$machine_name" == "$MACHINE_R300S_WT6320" -o "$machine_name" == "$MACHINE_R300S_1151G" ] && {
-        get_rssi_sig_level
-        sig_level=$?
-
-        set_signal_led "$sig_level"
-    }
-
-    [ "$machine_name" == "$MACHINE_R300C_1121G" -o "$machine_name" == "$MACHINE_R300A_1121G" ] && {
-        get_rssi_sig_level
-        sig_level=$?
-        
-        set_signal_led "$sig_level"
-    }
-
+    check_wwan_signal
+    check_vpn_connected
     sleep 5
 done
