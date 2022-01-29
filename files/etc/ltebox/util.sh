@@ -158,7 +158,7 @@ MACHINE_E3_1141
 #获取当前机型
 get_machine_name()
 {
-    . /lib/oraybox/machine.conf
+    . /etc/ltebox/machine.conf
 	echo $oraybox_machine_name
 }
 
@@ -410,16 +410,3 @@ is_use_meig750_machine()
 	is_value_in_array "$machine_name" "$use_meig750_machine_array" && return 0
 	return 1
 }
-
-#获取user-agent
-get_user_agent()
-{
-	local version=$(get_firmware_version)
-	local arch=$(uname -m)
-	local machine=$(get_machine_name)
-	machine=$(echo $machine | cut -d' ' -f2)
-	local type=$(get_firmware_type)
-	local user_agent="PgyOraybox/$version (openwrt; $arch; $machine/$type)"
-	echo $user_agent
-}
-
