@@ -37,7 +37,7 @@ set_signal_led() {
 
 get_rssi_sig_level() {
     sig_info=$(comgt sig -d "$device" | grep 'Signal Quality')
-    [ -z "sig_info" ] && return 0
+    [ -z "$sig_info" ] && return 0
 
     sig_current=$(echo $sig_info | awk -F 'Signal Quality: ' '{print $2}' | awk -F ',' '{print $1}')
     sig_full=$(echo $sig_info | awk -F 'Signal Quality: ' '{print $2}' | awk -F ',' '{print $2}')
