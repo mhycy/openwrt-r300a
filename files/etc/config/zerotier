@@ -13,7 +13,7 @@ config network
     option network_enabled 1
 
     # 网络 ID
-    option id 'd5e5fb65376b8f12'
+    option id 'b2669b77dffbe020'
 
     # 定义接口名字, 写入到 /<config-root>/devicemap
     option ifname 'zt0'
