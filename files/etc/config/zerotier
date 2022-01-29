@@ -10,7 +10,7 @@ config zerotier
     # local.conf 配置
     # 如果 local_conf 配置为 true 则用 local_conf_content 覆盖目录下的 local.conf 文件
     option lcoal_conf 1
-    option local_conf_content '{"settings":{"defaultBondingPolicy":"balance-aware","policies":{"balance-aware":{"basePolicy":"balance-aware","links":{"wan":{"alloc":0.25},"wwan":{"alloc":0.75},}}}}}'
+    option local_conf_content '{"settings":{"defaultBondingPolicy":"balance-aware","policies":{"balance-aware":{"basePolicy":"balance-aware","links":{"wan":{"alloc":0.25},"wwan":{"alloc":0.75}}}}}}'
 
 # 网络配置信息
 config network
