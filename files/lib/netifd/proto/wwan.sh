@@ -82,6 +82,9 @@ proto_wwan_setup() {
 		json_get_vars desc control data type
 		json_set_namespace "$old_cb"
 
+		# sleep 3 sec for modem standby
+		sleep 3
+
 		[ -n "$control" -a -n "$data" ] && {
 			ttys=$(ls -d /sys/bus/usb/devices/$devicename/${devicename}*/tty?* | sed "s/.*\///g" | tr "\n" " ")
 			ctl_device=/dev/$(echo $ttys | cut -d" " -f $((control + 1)))
