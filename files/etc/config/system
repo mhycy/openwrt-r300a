@@ -3,7 +3,6 @@ config system
         option conloglevel '8'
         option zonename 'Asia/Shanghai'
         option timezone 'CST-8'
-        option log_proto 'udp'
         option cronloglevel '5'
         option zram_comp_algo 'lzo'
 

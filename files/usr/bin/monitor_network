@@ -61,8 +61,8 @@ check_vpn_connected() {
     PING_TARGET="10.238.5.1"
     PING_WAIT="1"
 
-    PINT_TEST=`ping -c 1 -W $PING_WAIT $PING_TARGET | grep loss | awk -F "," '{print $2}' | awk -F " " '{print $1}'`
-    if [[ PING_TEST -ne 0 ]]; then
+    PING_TEST=`ping -c 1 -W $PING_WAIT $PING_TARGET | grep loss | awk -F "," '{print $2}' | awk -F " " '{print $1}'`
+    if [[ $PING_TEST -ne 0 ]]; then
         echo 0 > /sys/class/leds/red:sys/brightness
         echo 255 > /sys/class/leds/blue:sys/brightness
     else
