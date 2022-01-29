@@ -4,161 +4,71 @@
 . /lib/functions.sh
 
 machine_name=$(get_machine_name)
-
+echo $machine_name
 device="/dev/ttyUSB1"
 
-siginal_led_level_0 {
-	echo 0 > /sys/class/leds/blue:siginal1/brightness
-	echo 0 > /sys/class/leds/blue:siginal2/brightness
-	echo 0 > /sys/class/leds/blue:siginal3/brightness
+set_signal_led() {
+    local LEVEL=$1;
+
+    case $LEVEL in
+        0 )
+            echo 0 > /sys/class/leds/blue:siginal1/brightness
+            echo 0 > /sys/class/leds/blue:siginal2/brightness
+            echo 0 > /sys/class/leds/blue:siginal3/brightness
+        ;;
+        1 )
+            echo 255 > /sys/class/leds/blue:siginal1/brightness
+            echo 0 > /sys/class/leds/blue:siginal2/brightness
+            echo 0 > /sys/class/leds/blue:siginal3/brightness
+        ;;
+        2 )
+            echo 255 > /sys/class/leds/blue:siginal1/brightness
+            echo 255 > /sys/class/leds/blue:siginal2/brightness
+            echo 0 > /sys/class/leds/blue:siginal3/brightness
+        ;;
+        3 )
+            echo 255 > /sys/class/leds/blue:siginal1/brightness
+            echo 255 > /sys/class/leds/blue:siginal2/brightness
+            echo 255 > /sys/class/leds/blue:siginal3/brightness
+        ;;
+    esac
 }
 
-siginal_led_level_1 {
-	echo 1 > /sys/class/leds/blue:siginal1/brightness
-	echo 0 > /sys/class/leds/blue:siginal2/brightness
-	echo 0 > /sys/class/leds/blue:siginal3/brightness
+get_rssi_sig_level() {
+    sig_info=$(comgt sig -d "$device" | grep 'Signal Quality')
+    [ -z "sig_info" ] && return 0
+
+    sig_current=$(echo $sig_info | awk -F 'Signal Quality: ' '{print $2}' | awk -F ',' '{print $1}')
+    sig_full=$(echo $sig_info | awk -F 'Signal Quality: ' '{print $2}' | awk -F ',' '{print $2}')
+    
+    [[ "$sig_current" -lt 10 ]] && return 0
+    [[ "$sig_current" -ge 10 && "$sig_current" -lt 20 ]] && return 1
+    [[ "$sig_current" -ge 20 && "$sig_current" -lt 30 ]] && return 2
+    [[ "$sig_current" -ge 30 ]] && return 3
+
+    return 0
 }
 
-siginal_led_level_2 {
-	echo 1 > /sys/class/leds/blue:siginal1/brightness
-	echo 1 > /sys/class/leds/blue:siginal2/brightness
-	echo 0 > /sys/class/leds/blue:siginal3/brightness
-}
-
-siginal_led_level_3 {
-	echo 1 > /sys/class/leds/blue:siginal1/brightness
-	echo 1 > /sys/class/leds/blue:siginal2/brightness
-	echo 1 > /sys/class/leds/blue:siginal3/brightness
-}
+# 重置为无信号
+set_signal_led "0"
 
 # R300-2121G 4g modem控制口变为/dev/ttyUSB3
 [ "$machine_name" = "$MACHINE_R300_2121G" ] && device="/dev/ttyUSB3"
 
-get_rssi_sig_level() {
-	sig_info=$(comgt sig -d "$device" >/dev/null | grep 'Signal Quality')
-	[ -z "sig_info" ] && return 0
-
-	sig_current=$(echo $sig_info | awk -F 'Signal Quality: ' '{print $2}' | awk -F ',' '{print $1}')
-	sig_full=$(echo $sig_info | awk -F 'Signal Quality: ' '{print $2}' | awk -F ',' '{print $2}')
-	
-	[ $sig_current -eq 99 ] && return 0
-	[ $sig_current -ge 10 ] && [ $sig_current -lt 15 ] && return 1
-	[ $sig_current -ge 15 ] && [ $sig_current -lt 20 ] && return 2
-	[ $sig_current -ge 20 ] && return 3
-
-	return 0
-}
-
-# 美格SLM750获取信号强度
-get_meig750_sig_level(){
-	sig_info=$(exec_at_command "$device" "AT+SGCELLINFO")
-	rsrp=$(echo "$sig_info" | grep "RSRP:" | cut -d ":" -f2 | sed 's/\n//g')
-	[ -n "$rsrp" ] && {
-		[ $rsrp -le -100 ] && return 0
-		[ $rsrp -gt -100 ] && [ $rsrp -le -90 ] && return 1
-		[ $rsrp -gt -90 ] && [ $rsrp -lt -80 ] && return 2
-		[ $rsrp -ge -80 ] && return 3
-	}
-
-	get_rssi_sig_level
-	return $?
-}
-
-# 移远EC200T获取信号强度
-get_ec200t_sig_level() {
-	sig_info=$(exec_at_command "$device" "AT+QCSQ")
-	for line in $sig_info; do
-		mode="$(echo "$line"|cut -d, -f1|sed 's/\"//g')"
-		if [ "$mode" = "GSM" ] || [ "$mode" = "WCDMA" ] || [ "$mode" = "TDSCDMA" ]; then
-			rssi="$(echo "$line"|cut -d, -f2)"
-		elif [ "$mode" = "LTE" ]; then
-			rssi="$(echo "$line"|cut -d, -f2)"
-			rsrp="$(echo "$line"|cut -d, -f3)"
-		else
-			continue
-		fi
-	done
-
-	[ -n "$rsrp" ] && {
-		[ $rsrp -le -100 ] && return 0
-		[ $rsrp -gt -100 ] && [ $rsrp -le -90 ] && return 1
-		[ $rsrp -gt -90 ] && [ $rsrp -lt -80  ] && return 2
-		[ $rsrp -ge -80 ] && return 3
-	}
-
-	get_rssi_sig_level
-	return $?
-}
-
 while true;do
-	config_load network
-	current_wan_proto=""
-	current_wan_spare_proto=""
-	
-	sig_level=0
-	config_get current_wan_proto wan proto "dhcp"
-	config_get current_wan_spare_proto wan_spare proto "dhcp"
+    [ "$machine_name" == "$MACHINE_R300_1121G" -o "$machine_name" == "$MACHINE_R300_2121G" -o "$machine_name" == "$MACHINE_R300S_WT6320" -o "$machine_name" == "$MACHINE_R300S_1151G" ] && {
+        get_rssi_sig_level
+        sig_level=$?
 
-	[ "$machine_name" == "$MACHINE_R300_1121G" -o "$machine_name" == "$MACHINE_R300_2121G" -o "$machine_name" == "$MACHINE_R300S_WT6320" -o "$machine_name" == "$MACHINE_R300S_1151G" ] && {
-		[ "$current_wan_proto" == "wwan" ] && {
-			ubus call network.interface.wan status | grep '"up": true' && {
-				get_meig750_sig_level
-				sig_level=$?
-			}
-        } || {
-		    [ "$current_wan_spare_proto" == "wwan" ] && {
-                ubus call network.interface.wan_spare status | grep '"up": true' && {
-                    get_meig750_sig_level
-                    sig_level=$?
-			    }
-			}
-	    }
-		case $sig_level in
-			0)
-			siginal_led_level_0
-			;;
-			1)
-			siginal_led_level_1
-			;;
-			2)
-			siginal_led_level_2
-			;;
-			3)
-			siginal_led_level_3
-			;;
-		esac
+        set_signal_led "$sig_level"
     }
 
-	[ "$machine_name" == "$MACHINE_R300C_1121G" -o "$machine_name" == "$MACHINE_R300A_1121G" ] && {
-		[ "$current_wan_proto" == "wwan" ] && {
-			sig_level=0
-			ubus call network.interface.wan status | grep '"up": true' && {
-				get_ec200t_sig_level
-				sig_level=$?
-			}
-		} || {
-		    [ "$current_wan_spare_proto" == "wwan" ] && {
-                ubus call network.interface.wan_spare status | grep '"up": true' && {
-                    get_ec200t_sig_level
-                    sig_level=$?
-			    }
-            }
-	    }
-		case $sig_level in
-			0)
-			siginal_led_level_0
-			;;
-			1)
-			siginal_led_level_1
-			;;
-			2)
-			siginal_led_level_2
-			;;
-			3)
-			siginal_led_level_3
-			;;
-		esac
-	}
+    [ "$machine_name" == "$MACHINE_R300C_1121G" -o "$machine_name" == "$MACHINE_R300A_1121G" ] && {
+        get_rssi_sig_level
+        sig_level=$?
+        
+        set_signal_led "$sig_level"
+    }
 
-	sleep 5
+    sleep 5
 done
