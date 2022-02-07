@@ -166,7 +166,7 @@ proto_ncm_setup() {
 		json_close_object
 		ubus call network add_dynamic "$(json_dump)"
 	}
-
+	echo "PDPTYPE: ${pdptype}"
 	[ "$pdptype" = "IPV6" -o "$pdptype" = "IPV4V6" ] && {
 		json_init
 		json_add_string name "${interface}_6"
