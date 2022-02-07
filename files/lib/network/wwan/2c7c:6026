@@ -3,6 +3,7 @@
 	"control":1,
 	"data": 0,
 	"type":"cdc_ether",
+	"pdptype":"IPV4V6",
 	"lock_freq":[
 		{
 			"command":"AT+QCFG=\"nwscanmode\"",
