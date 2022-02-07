@@ -18,6 +18,7 @@ config interface 'wwan'
         option device 'usb0'
         option proto 'wwan'
         option metric '10'
+        option pdptype 'IPV4V6'
 
 config interface 'loopback'
         option device 'lo'

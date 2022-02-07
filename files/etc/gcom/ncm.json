@@ -96,7 +96,7 @@
 			"ATS0=0",
 			"AT+QCFG=\\\"nat\\\",1",
 			"AT+QCFG=\\\"usbnet\\\",3",
-			"AT+QICSGP=${profile},2{apn:+,\\\"$apn\\\"}${username:+,\\\"$username\\\"}${password:+,\\\"$password\\\"}${auth:+,$auth}"
+			"AT+QICSGP=${profile},3{apn:+,\\\"$apn\\\"}${username:+,\\\"$username\\\"}${password:+,\\\"$password\\\"}${auth:+,$auth}"
 		],
 		"connect": "AT+QNETDEVCTL=1,1",
 		"disconnect": "AT+QNETDEVCTL=0,1"
