@@ -35,6 +35,7 @@ proto_ncm_setup() {
 	[ -n "$profile" ] || profile=1
 
 	pdptype=$(echo "$pdptype" | awk '{print toupper($0)}')
+	echo "PDP: ${pdptype}"
 	[ "$pdptype" = "IP" -o "$pdptype" = "IPV6" -o "$pdptype" = "IPV4V6" ] || pdptype="IP"
 
 	[ -n "$ctl_device" ] && device=$ctl_device
@@ -166,7 +167,7 @@ proto_ncm_setup() {
 		json_close_object
 		ubus call network add_dynamic "$(json_dump)"
 	}
-	echo "PDPTYPE: ${pdptype}"
+
 	[ "$pdptype" = "IPV6" -o "$pdptype" = "IPV4V6" ] && {
 		json_init
 		json_add_string name "${interface}_6"
