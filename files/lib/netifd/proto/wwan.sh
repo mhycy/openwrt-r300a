@@ -122,7 +122,7 @@ proto_wwan_setup() {
 	uci_set_state network "$interface" driver "$driver"
 	uci_set_state network "$interface" ctl_device "$ctl_device"
 	uci_set_state network "$interface" dat_device "$dat_device"
-
+	echo "PARAMS: $@"
 	case $driver in
 	qmi_wwan)		proto_qmi_setup $@ ;;
 	cdc_mbim)		proto_mbim_setup $@ ;;
