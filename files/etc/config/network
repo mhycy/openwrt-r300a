@@ -20,6 +20,12 @@ config interface 'wwan'
         option metric '10'
         option pdptype 'IPV4V6'
 
+config interface 'wan6'
+        option device 'eth0.2'
+        option proto 'dhcpv6'
+        option extendprefix 1
+        option metric '20'
+
 config interface 'loopback'
         option device 'lo'
         option proto 'static'

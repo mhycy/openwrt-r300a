@@ -33,6 +33,7 @@ proto_wwan_init_config() {
 	proto_config_add_string delay
 	proto_config_add_string modes
 	proto_config_add_string bus
+	proto_config_add_string pdptype
 }
 
 proto_wwan_setup() {
